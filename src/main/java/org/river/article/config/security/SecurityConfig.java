@@ -103,7 +103,9 @@ public class SecurityConfig {
         // 添加自定义token验证过滤器
         httpSecurity.addFilterBefore(new JwtAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.cors().configurationSource(corsConfiguration());
+        httpSecurity.cors(cors->{
+            cors.configurationSource(corsConfiguration());
+        });
         httpSecurity.exceptionHandling(exceptionHandling -> {
             exceptionHandling.accessDeniedHandler(authAccessDeniedHandler);
             exceptionHandling.authenticationEntryPoint(authEntryPointHandler);
