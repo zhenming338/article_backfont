@@ -1,6 +1,5 @@
 package org.river.article.filter;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -33,13 +32,13 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         try {
             String url = request.getRequestURL().toString();
 
-            if (url.contains("/login")||url.contains("/hello")) {
+            if (url.contains("/login")) {
                 chain.doFilter(request, response);
                 return;
             }
 
             String jwtToken = request.getHeader("token");
-            if (!StringUtils.isEmpty(jwtToken)) {
+            if (jwtToken.equals("null")) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -57,18 +56,17 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             }
             String username = claims.get("username", String.class);
             String role = claims.get("role", String.class);
-            String authorityString = claims.get("authorityString", String.class);
+            String authorityString = claims.get("authorities", String.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     username,
                     role,
                     AuthorityUtils.commaSeparatedStringToAuthorityList(authorityString)
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
+            System.out.println(authentication.getAuthorities());
             BaseContext.setContext(username);
             chain.doFilter(request, response);
         } catch (Exception e) {
-
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json; charset=utf-8");
             String value = new ObjectMapper().writeValueAsString(Result.error("token验证失败"));

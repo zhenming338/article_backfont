@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.river.article.mapper.UserMapper">
 
-    <!-- 根据用户名查询权限列表 -->
     <select id="getUserByUsername" resultType="org.river.article.pojo.entity.User">
         select *
         from user

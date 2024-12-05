@@ -16,6 +16,7 @@ import java.util.StringJoiner;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class LoginController {
 
 
@@ -30,14 +31,15 @@ public class LoginController {
     }
 
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public Result<Object> login(@RequestBody UserLoginDto userLoginDto) {
         System.out.println(userLoginDto);
         try {
             BaseContext.setContext(userLoginDto.getRole());
             UserDetails userDetails = userLoginDetailsServiceImpl.loadUserByUsername(userLoginDto.getUsername());
             StringJoiner authorityString = new StringJoiner(",", "", "");
-            userDetails.getAuthorities().forEach(authority -> authorityString.add(authority.getAuthority()));
+            userDetails.getAuthorities().forEach(authority
+                    -> authorityString.add(authority.getAuthority()));
             Map<String, Object> claims = new HashMap<>();
             claims.put("username", userLoginDto.getUsername());
             claims.put("role", userLoginDto.getRole());
@@ -47,6 +49,5 @@ public class LoginController {
         } catch (Exception e) {
             return Result.error(e.getMessage());
         }
-
     }
 }
