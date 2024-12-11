@@ -32,13 +32,20 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         try {
             String url = request.getRequestURL().toString();
 
-            if (url.contains("/login")) {
+            if (url.contains("/login" )) {
                 chain.doFilter(request, response);
                 return;
             }
 
             String jwtToken = request.getHeader("token");
-            if (jwtToken.equals("null")) {
+            String jwtTokenByFile = request.getHeader("authorization");
+            System.out.println(jwtToken);
+            System.out.println(jwtTokenByFile);
+            if(jwtToken==null||jwtToken.isEmpty() ){
+                jwtToken = jwtTokenByFile;
+            }
+            System.out.println(jwtToken);
+            if (jwtToken.isEmpty()) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -67,6 +74,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             BaseContext.setContext(username);
             chain.doFilter(request, response);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json; charset=utf-8");
             String value = new ObjectMapper().writeValueAsString(Result.error("token验证失败"));

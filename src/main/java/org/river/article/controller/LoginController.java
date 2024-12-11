@@ -2,7 +2,7 @@ package org.river.article.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.river.article.common.Result;
-import org.river.article.pojo.Dto.UserLoginDto;
+import org.river.article.pojo.dto.UserLoginDto;
 import org.river.article.service.impl.UserLoginDetailsServiceImpl;
 import org.river.article.utils.jwt.JwtTokenUtils;
 import org.river.article.utils.springContext.BaseContext;

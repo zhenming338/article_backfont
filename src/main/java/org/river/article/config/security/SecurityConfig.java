@@ -34,7 +34,6 @@ public class SecurityConfig {
     @Resource(type = UserLoginDetailsServiceImpl.class)
     private final UserDetailsService userDetailsService;
 
-    private final AuthEntryPointHandler authenticationManager;
     private final AuthAccessDeniedHandler authAccessDeniedHandler;
 
     @Bean
@@ -83,9 +82,18 @@ public class SecurityConfig {
                                                           AuthEntryPointHandler authEntryPointHandler) throws Exception {
         httpSecurity.authorizeHttpRequests(authorizeHttpRequests -> {
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/login").permitAll();
+//            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/file/**").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").hasAuthority("allAuthority");
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").hasAuthority("allAuthority");
+
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/hello").hasAuthority("getUsers");
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/**").hasAuthority("getUserInfo");
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/user/**").hasAuthority("getUserInfo");
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/article/**").hasAuthority("getUserInfo");
+
+
+
+
         });
 
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
@@ -103,7 +111,7 @@ public class SecurityConfig {
         // 添加自定义token验证过滤器
         httpSecurity.addFilterBefore(new JwtAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.cors(cors->{
+        httpSecurity.cors(cors -> {
             cors.configurationSource(corsConfiguration());
         });
         httpSecurity.exceptionHandling(exceptionHandling -> {

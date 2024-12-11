@@ -10,6 +10,12 @@ spring:
     user:
       name: river
       password: 123465
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+file:
+  filePath: /home/river/file-server/
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

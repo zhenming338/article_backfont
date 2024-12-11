@@ -1,4 +1,4 @@
-package org.river.article.pojo.Dto;
+package org.river.article.pojo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

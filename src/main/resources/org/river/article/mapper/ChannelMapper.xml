@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.river.article.mapper.ChannelMapper">
+
+    <select id="getChannelList" resultType="org.river.article.pojo.entity.Channel">
+        select *
+        from channel;
+    </select>
+    <select id="getChannelById" resultType="org.river.article.pojo.entity.Channel">
+        select * from channel where id = #{id}
+    </select>
+
+</mapper>
