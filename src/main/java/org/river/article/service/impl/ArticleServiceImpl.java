@@ -7,10 +7,13 @@ import org.river.article.mapper.ArticleMapper;
 import org.river.article.mapper.ChannelMapper;
 import org.river.article.mapper.UserMapper;
 import org.river.article.pojo.dto.AddArticleDto;
+import org.river.article.pojo.dto.GetArticleCardDto;
 import org.river.article.pojo.dto.GetArticleListPageDto;
 import org.river.article.pojo.entity.Article;
 import org.river.article.pojo.entity.Channel;
 import org.river.article.pojo.entity.User;
+import org.river.article.pojo.vo.ArticleCardVo;
+import org.river.article.pojo.vo.ArticleContentVo;
 import org.river.article.pojo.vo.ArticlePageVO;
 import org.river.article.service.ArticleService;
 import org.river.article.utils.springContext.BaseContext;
@@ -53,7 +56,8 @@ public class ArticleServiceImpl implements ArticleService {
         if (getArticleListPageDto.getPageSize() == null || getArticleListPageDto.getPageSize() <= 0) {
             getArticleListPageDto.setPageSize(10);
         }
-        getArticleListPageDto.setStartPageIndex((getArticleListPageDto.getPageIndex() - 1) * getArticleListPageDto.getPageSize());
+        getArticleListPageDto
+                .setStartPageIndex((getArticleListPageDto.getPageIndex() - 1) * getArticleListPageDto.getPageSize());
 
         List<Article> articleList = articleMapper.getArticlePage(getArticleListPageDto);
         int articleCount = articleMapper.getArticleCountByPageDto(getArticleListPageDto);
@@ -61,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticlePageVO> articlePageVOList = new ArrayList<ArticlePageVO>();
         for (Article article : articleList) {
             ArticlePageVO articlePageVO = new ArticlePageVO();
-            User user=userMapper.getUserById(article.getAuthorId());
+            User user = userMapper.getUserById(article.getAuthorId());
             Channel channel = channelMapper.getChannelById(article.getChannelId());
             BeanUtils.copyProperties(article, articlePageVO);
             articlePageVO.setAuthorName(user.getUsername());
@@ -70,4 +74,36 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return new Page<>(articleCount, articlePageVOList);
     }
+
+    @Override
+    public void deleteMyArticleByArticleId(int articleId) {
+        String username = BaseContext.getContext();
+        User user = userMapper.getUserByUsername(username);
+        articleMapper.deleteArticleByArticleIdAndUserId(user.getId(), articleId);
+    }
+
+    @Override
+    public List<ArticleCardVo> getArticleCard(GetArticleCardDto getArticleCardDto) {
+        List<ArticleCardVo> articleCardVoList = new ArrayList<ArticleCardVo>();
+
+        List<Article> articleList = articleMapper.getArticleByGetArticleCardDto(getArticleCardDto);
+        for (Article article : articleList) {
+            ArticleCardVo articleCardVo = new ArticleCardVo();
+            BeanUtils.copyProperties(article, articleCardVo);
+            articleCardVo.setLiked(false);
+            articleCardVo.setCollected(false);
+            articleCardVo.setArticleId(article.getId());
+            articleCardVo.setAuthorName(userMapper.getUserById(article.getAuthorId()).getUsername());
+            articleCardVoList.add(articleCardVo);
+        }
+        return articleCardVoList;
+
+    }
+
+    @Override
+    public ArticleContentVo getArticleContentByArticleId(int articleId) {
+        ArticleContentVo articleContentVo = articleMapper.getArticleContentByArticleId(articleId);
+        return articleContentVo;
+    }
+
 }

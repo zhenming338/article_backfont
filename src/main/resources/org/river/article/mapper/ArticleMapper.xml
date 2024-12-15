@@ -1,60 +1,61 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.river.article.mapper.ArticleMapper">
 
-    <insert id="addArticle">
-        INSERT INTO article (title, author_id, context, channel_id, status, cover_url)
-        VALUES (#{title}, #{authorId}, #{context}, #{channelId}, #{status}, #{coverUrl})
-    </insert>
+    <insert id="addArticle"> INSERT INTO article (title, author_id, context, channel_id, status,
+        cover_url) VALUES (#{title}, #{authorId}, #{context}, #{channelId}, #{status}, #{coverUrl}) </insert>
+
+
+    <delete id="deleteArticleByArticleIdAndUserId"> delete from article where author_id =
+        #{authorId} and id = #{articleId} </delete>
+
+
     <select id="getArticlePage" resultType="org.river.article.pojo.entity.Article"
-            parameterType="org.river.article.pojo.dto.GetArticleListPageDto">
-        SELECT *
-        FROM article
-        <where>
-            <if test="title != null and title != ''">
-                AND title LIKE CONCAT('%', #{title}, '%')
-            </if>
-            <if test="authorId != null and authorId != 0">
-                AND author_id = #{authorId}
-            </if>
-            <if test="channelId != null and channelId != 0">
-                AND channel_id = #{channelId}
-            </if>
-            <if test="startTime != null">
-                AND create_time &gt;= #{startTime}
-            </if>
-            <if test="endTime != null">
-                AND create_time &lt;= #{endTime}
-            </if>
-            <if test="status != null and status != 0">
-                AND status = #{status}
-            </if>
+        parameterType="org.river.article.pojo.dto.GetArticleListPageDto"> SELECT * FROM article <where>
+            <if test="title != null and title != ''"> AND title LIKE CONCAT('%', #{title}, '%') </if>
+            <if
+                test="authorId != null and authorId != 0"> AND author_id = #{authorId} </if>
+            <if
+                test="channelId != null and channelId != 0"> AND channel_id = #{channelId} </if>
+            <if
+                test="startTime != null"> AND create_time &gt;= #{startTime} </if>
+            <if
+                test="endTime != null"> AND create_time &lt;= #{endTime} </if>
+            <if
+                test="status != null and status != 0"> AND status = #{status} </if>
         </where>
-        ORDER BY create_time DESC
-        LIMIT #{startPageIndex}, #{pageSize}
-    </select>
+        ORDER BY create_time DESC LIMIT #{startPageIndex}, #{pageSize} </select>
     <select id="getArticleCountByPageDto" resultType="java.lang.Integer"
-            parameterType="org.river.article.pojo.dto.GetArticleListPageDto">
-        select count(*) from article
-        <where>
-            <if test="title != null and title != ''">
-                AND title LIKE CONCAT('%', #{title}, '%')
-            </if>
-            <if test="channelId != null and channelId != 0">
-                AND channel_id = #{channelId}
-            </if>
-            <if test="authorId != null and authorId != 0">
-                AND author_id = #{authorId}
-            </if>
-            <if test="startTime != null">
-                AND create_time &gt;= #{startTime}
-            </if>
-            <if test="endTime != null">
-                AND create_time &lt;= #{endTime}
-            </if>
-            <if test="status != null and status != 0">
-                AND status = #{status}
-            </if>
+        parameterType="org.river.article.pojo.dto.GetArticleListPageDto"> select count(*) from
+        article <where>
+            <if test="title != null and title != ''"> AND title LIKE CONCAT('%', #{title}, '%') </if>
+            <if
+                test="channelId != null and channelId != 0"> AND channel_id = #{channelId} </if>
+            <if
+                test="authorId != null and authorId != 0"> AND author_id = #{authorId} </if>
+            <if
+                test="startTime != null"> AND create_time &gt;= #{startTime} </if>
+            <if
+                test="endTime != null"> AND create_time &lt;= #{endTime} </if>
+            <if
+                test="status != null and status != 0"> AND status = #{status} </if>
         </where>
     </select>
+    <select id="getArticleByGetArticleCardDto" resultType="org.river.article.pojo.entity.Article">
+        select * from article <where>
+            <if test="title!=null"> or title like concat('%',#{title},'%') </if>
+            <if
+                test="context!=null"> or context like concat('%',#{context},'%') </if>
+            <if
+                test="authorName!=null"> or author_id in (select id from user where username like
+            concat ('%',#{authorName},'%')) </if>
+        </where>
+    </select>
+
+    <!-- getArticleContentByArticleId -->
+
+    <select id="getArticleContentByArticleId"> SELECT a.context, a.create_time,
+        a.update_time, u.username AS authorName, c.name AS channelName, a.title FROM article
+        AS a INNER JOIN user AS u ON a.author_id = u.id INNER JOIN channel AS c ON a.channel_id =
+        c.id WHERE a.id = #{articleId};  </select>
 </mapper>

@@ -1,6 +1,6 @@
 package org.river.article.pojo.vo;
 
-import org.river.article.pojo.entity.Article;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticlePageVO extends Article {
+public class ArticleContentVo {
     String authorName;
+    LocalDateTime createTime;
+    LocalDateTime updateTime;
+    String context;
+    String title;
     String channelName;
 }

@@ -18,6 +18,7 @@ public class AuthAccessDeniedHandler implements AccessDeniedHandler {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json; charset=utf-8");
         String value = new ObjectMapper().writeValueAsString(Result.error("权限不足！"));
-        response.getWriter().write(value);
+        // response.getWriter().write(value);
+        System.out.println(value);
     }
 }

@@ -28,11 +28,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         try {
             String url = request.getRequestURL().toString();
 
-            if (url.contains("/login" )) {
+            if (url.contains("/login") || url.contains("sendCode")) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             String jwtTokenByFile = request.getHeader("authorization");
             System.out.println(jwtToken);
             System.out.println(jwtTokenByFile);
-            if(jwtToken==null||jwtToken.isEmpty() ){
+            if (jwtToken == null || jwtToken.isEmpty()) {
                 jwtToken = jwtTokenByFile;
             }
             System.out.println(jwtToken);
@@ -67,8 +68,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     username,
                     role,
-                    AuthorityUtils.commaSeparatedStringToAuthorityList(authorityString)
-            );
+                    AuthorityUtils.commaSeparatedStringToAuthorityList(authorityString));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println(authentication.getAuthorities());
             BaseContext.setContext(username);

@@ -82,18 +82,13 @@ public class SecurityConfig {
                                                           AuthEntryPointHandler authEntryPointHandler) throws Exception {
         httpSecurity.authorizeHttpRequests(authorizeHttpRequests -> {
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/login").permitAll();
-//            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/file/**").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/user/sendCode").permitAll();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").hasAuthority("allAuthority");
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").hasAuthority("allAuthority");
-
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/hello").hasAuthority("getUsers");
+            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("allAuthority");
             authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/**").hasAuthority("getUserInfo");
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/user/**").hasAuthority("getUserInfo");
             authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/article/**").hasAuthority("getUserInfo");
-
-
-
-
         });
 
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);

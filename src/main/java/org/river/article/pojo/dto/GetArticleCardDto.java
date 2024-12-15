@@ -1,14 +1,14 @@
-package org.river.article.pojo.vo;
-
-import org.river.article.pojo.entity.Article;
+package org.river.article.pojo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticlePageVO extends Article {
+public class GetArticleCardDto {
+    String title;
+    String context;
     String authorName;
-    String channelName;
 }
