@@ -17,6 +17,7 @@ public class User {
     private Integer id;
     private String email;
     private String phone;
+    boolean enabled;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

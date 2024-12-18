@@ -13,4 +13,9 @@ public class Role {
 
     int id;
     String name;
+    String label;
+    String authLabel;
+    int channelId;
+    boolean isAdmin;
+    
 }

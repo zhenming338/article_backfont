@@ -36,7 +36,6 @@ public class FileController {
                 file.transferTo(new File(filePath + fileName));
             } catch (IOException e) {
                 System.out.println(e.getMessage());
-//                throw new CommonException("文件上传失败");
                 throw new RuntimeException("file upload failed");
             }
             try {
@@ -75,6 +74,5 @@ public class FileController {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-//        return Result.success();
     }
 }

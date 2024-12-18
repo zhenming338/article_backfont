@@ -9,4 +9,6 @@ public interface UserMapper {
     User getUserByUsername(@Param("username") String username);
 
     User getUserById(Integer id);
+
+    void addUser(User user);
 }

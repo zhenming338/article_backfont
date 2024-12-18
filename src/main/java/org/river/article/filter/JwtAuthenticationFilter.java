@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
@@ -31,11 +33,19 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         try {
+
+            List<String> exclude = new ArrayList<>();
+            exclude.add("login");
+            exclude.add("sendCode");
+            exclude.add("register");
+            exclude.add("getRoleList");
             String url = request.getRequestURL().toString();
 
-            if (url.contains("/login") || url.contains("sendCode")) {
-                chain.doFilter(request, response);
-                return;
+            for (String excludeWord : exclude) {
+                if (url.contains(excludeWord)) {
+                    chain.doFilter(request, response);
+                    return;
+                }
             }
 
             String jwtToken = request.getHeader("token");

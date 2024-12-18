@@ -1,13 +1,20 @@
 package org.river.article.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.management.RuntimeErrorException;
+
 import org.river.article.common.Result;
+import org.river.article.pojo.dto.AddUserDto;
+import org.river.article.pojo.entity.Role;
 import org.river.article.pojo.vo.UserVo;
 import org.river.article.service.UserService;
 import org.river.article.utils.email.EmailUtil;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     @Resource
     private UserService userService;
-
     @GetMapping("/getUserInfo")
     public Result<UserVo> getUserInfo() {
         UserVo userVo = userService.getUserInfo();
@@ -47,5 +53,35 @@ public class UserController {
         }
     }
 
+    /**
+     * @param addUserDto
+     * @return
+     */
+    @PostMapping("/register")
+    public Result<Object> register(@RequestBody AddUserDto addUserDto) {
+        System.out.println(emailCodeMap);
+        System.out.println(addUserDto);
+        String email = addUserDto.getEmail();
+        String code = addUserDto.getCode();
+        if(emailCodeMap!=null){
+            System.out.println(emailCodeMap.get(email));
+            System.out.println(code);
+            if(!emailCodeMap.get(email).equals(code)){
+                throw new RuntimeErrorException(null, "验证码错误");
+            }
+        }else{
+            throw new RuntimeErrorException(null,"邮箱类初始化失败");
+        }
 
+        userService.addUserByAddUserDto(addUserDto);
+
+        return Result.success();
+    }
+
+    @GetMapping("/getRoleList")
+    public Result<List<Role>> getRoleList() {
+        List<Role> roleList=userService.getRoleList();
+        return Result.success(roleList);
+    }
+    
 }
