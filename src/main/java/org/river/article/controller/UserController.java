@@ -9,6 +9,7 @@ import javax.management.RuntimeErrorException;
 import org.river.article.common.Result;
 import org.river.article.pojo.dto.AddUserDto;
 import org.river.article.pojo.entity.Role;
+import org.river.article.pojo.entity.User;
 import org.river.article.pojo.vo.UserVo;
 import org.river.article.service.UserService;
 import org.river.article.utils.email.EmailUtil;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     @Resource
     private UserService userService;
+
     @GetMapping("/getUserInfo")
     public Result<UserVo> getUserInfo() {
         UserVo userVo = userService.getUserInfo();
@@ -63,14 +65,14 @@ public class UserController {
         System.out.println(addUserDto);
         String email = addUserDto.getEmail();
         String code = addUserDto.getCode();
-        if(emailCodeMap!=null){
+        if (emailCodeMap != null) {
             System.out.println(emailCodeMap.get(email));
             System.out.println(code);
-            if(!emailCodeMap.get(email).equals(code)){
+            if (!emailCodeMap.get(email).equals(code)) {
                 throw new RuntimeErrorException(null, "验证码错误");
             }
-        }else{
-            throw new RuntimeErrorException(null,"邮箱类初始化失败");
+        } else {
+            throw new RuntimeErrorException(null, "邮箱类初始化失败");
         }
 
         userService.addUserByAddUserDto(addUserDto);
@@ -80,10 +82,15 @@ public class UserController {
 
     @GetMapping("/getRoleList")
     public Result<List<Role>> getRoleList() {
-        List<Role> roleList=userService.getRoleList();
+        List<Role> roleList = userService.getRoleList();
         return Result.success(roleList);
     }
-    
 
-    
+    @PostMapping("/editUserInfo")
+    public Result<Object> editUserInfo(@RequestBody User user) {
+
+        userService.editUserInfo(user);
+        return Result.success();
+    }
+
 }

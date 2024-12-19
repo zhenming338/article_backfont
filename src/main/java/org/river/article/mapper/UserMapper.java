@@ -19,4 +19,6 @@ public interface UserMapper {
     void deleteUserById(Integer id);
 
     void changeUserState(User user);
+
+    void editUserInfo(User user);
 }

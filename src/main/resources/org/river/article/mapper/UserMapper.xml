@@ -23,4 +23,13 @@
     <!-- changeUserState -->
 
     <update id="changeUserState"> update user set enabled = #{enabled} where id = #{id} </update>
+
+    <!-- editUserInfo -->
+
+    <update id="editUserInfo"> update user <set>
+            <if test="username != null"> username = #{username}, </if>
+            <if test="email != null">
+        email = #{email} ,</if>
+        </set>
+    </update>
 </mapper>

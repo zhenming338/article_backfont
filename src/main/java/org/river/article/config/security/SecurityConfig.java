@@ -79,18 +79,31 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity,
-                                                          AuthEntryPointHandler authEntryPointHandler) throws Exception {
+            AuthEntryPointHandler authEntryPointHandler) throws Exception {
         httpSecurity.authorizeHttpRequests(authorizeHttpRequests -> {
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/login").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/register").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/user/sendCode").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/user/getRoleList").permitAll();
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").hasAuthority("allAuthority");
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").hasAuthority("allAuthority");
-            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("allAuthority");
-            authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/api/user/**").hasAuthority("getUserInfo");
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/user/**").hasAuthority("getUserInfo");
-            authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/api/article/**").hasAuthority("getUserInfo");
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST,
+                    "/api/user/login").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST,
+                    "/api/user/register").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+                    "/api/user/sendCode").permitAll();
+            // authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").permitAll();
+            // authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+            "/api/user/getRoleList").permitAll();
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+            "/**").hasAuthority("allAuthority");
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST,
+            "/**").hasAuthority("allAuthority");
+            authorizeHttpRequests.requestMatchers(HttpMethod.DELETE,
+            "/**").hasAuthority("allAuthority");
+            authorizeHttpRequests.requestMatchers(HttpMethod.POST,
+            "/api/user/**").hasAuthority("getUserInfo");
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+            "/api/user/**").hasAuthority("getUserInfo");
+            authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+            "/api/article/**").hasAuthority("getUserInfo");
+
         });
 
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
@@ -106,7 +119,8 @@ public class SecurityConfig {
         // 通过上下文获取AuthenticationManager
         AuthenticationManager authenticationManager = SpringContextUtils.getBean("authenticationManager");
         // 添加自定义token验证过滤器
-        httpSecurity.addFilterBefore(new JwtAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new JwtAuthenticationFilter(authenticationManager),
+                UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.cors(cors -> {
             cors.configurationSource(corsConfiguration());

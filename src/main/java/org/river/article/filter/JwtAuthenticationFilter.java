@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             exclude.add("sendCode");
             exclude.add("register");
             exclude.add("getRoleList");
+            // exclude.add("file");
             String url = request.getRequestURL().toString();
 
             for (String excludeWord : exclude) {

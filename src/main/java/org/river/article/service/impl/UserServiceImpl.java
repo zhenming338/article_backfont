@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
         List<Role> roleList = roleMapper.getRoleList();
         return roleList;
     }
+
+    @Override
+    public void editUserInfo(User user) {
+        userMapper.editUserInfo(user);
+    }
 }
