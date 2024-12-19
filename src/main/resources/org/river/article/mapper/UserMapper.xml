@@ -11,4 +11,16 @@
 
     <insert id="addUser" useGeneratedKeys="true" keyProperty="id"> insert into user
         (username,password,email,enabled) values (#{username},#{password},#{email},#{enabled}) </insert>
+
+    <!-- getAllUser -->
+
+    <select id="getAllUser"> select * from user </select>
+
+    <!-- deleteUserById -->
+
+    <delete id="deleteUserById"> delete from user where id = #{id} </delete>
+
+    <!-- changeUserState -->
+
+    <update id="changeUserState"> update user set enabled = #{enabled} where id = #{id} </update>
 </mapper>

@@ -1,11 +1,10 @@
 package org.river.article.pojo.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.river.article.pojo.entity.Article;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

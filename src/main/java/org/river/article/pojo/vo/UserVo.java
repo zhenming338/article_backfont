@@ -19,4 +19,5 @@ public class UserVo {
     String email;
     LocalDateTime createTime;
     List<Role> roleList;
+    boolean enabled;
 }

@@ -59,6 +59,9 @@ public class ArticleServiceImpl implements ArticleService {
         getArticleListPageDto
                 .setStartPageIndex((getArticleListPageDto.getPageIndex() - 1) * getArticleListPageDto.getPageSize());
 
+        String username = BaseContext.getContext();
+        int authorId = userMapper.getUserByUsername(username).getId();
+        getArticleListPageDto.setAuthorId(authorId);
         List<Article> articleList = articleMapper.getArticlePage(getArticleListPageDto);
         int articleCount = articleMapper.getArticleCountByPageDto(getArticleListPageDto);
 
@@ -93,6 +96,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleCardVo.setLiked(false);
             articleCardVo.setCollected(false);
             articleCardVo.setArticleId(article.getId());
+
             articleCardVo.setAuthorName(userMapper.getUserById(article.getAuthorId()).getUsername());
             articleCardVoList.add(articleCardVo);
         }

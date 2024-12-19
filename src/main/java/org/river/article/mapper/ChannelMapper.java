@@ -10,4 +10,8 @@ public interface ChannelMapper {
     List<Channel> getChannelList();
 
     Channel getChannelById(Integer id);
+
+    void modifyChannel(Channel channel);
+
+    void deleteById(Integer id);
 }

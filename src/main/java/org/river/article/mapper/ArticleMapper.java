@@ -1,6 +1,7 @@
 package org.river.article.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.river.article.pojo.dto.ChangeState;
 import org.river.article.pojo.dto.GetArticleCardDto;
 import org.river.article.pojo.dto.GetArticleListPageDto;
 import org.river.article.pojo.entity.Article;
@@ -21,4 +22,10 @@ public interface ArticleMapper {
     List<Article> getArticleByGetArticleCardDto(GetArticleCardDto getArticleCardDto);
 
     ArticleContentVo getArticleContentByArticleId(int articleId);
+
+    List<Article> getAllArticlePage(GetArticleListPageDto getArticleListPageDto);
+
+    void deleteArticlesByChannelId(Integer channelId);
+
+    void changeState(ChangeState changeState);
 }

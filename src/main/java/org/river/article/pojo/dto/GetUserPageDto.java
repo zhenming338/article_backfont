@@ -1,0 +1,15 @@
+package org.river.article.pojo.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GetUserPageDto {
+    int pageIndex;
+    int pageSize;
+    int roleId;
+    
+}
