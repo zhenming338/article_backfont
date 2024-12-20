@@ -87,8 +87,9 @@ public class SecurityConfig {
                     "/api/user/register").permitAll();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET,
                     "/api/user/sendCode").permitAll();
-            // authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/**").permitAll();
-            // authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/**").permitAll();
+
+                                authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+                    "/api/user/getUserInfo").permitAll();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET,
             "/api/user/getRoleList").permitAll();
             authorizeHttpRequests.requestMatchers(HttpMethod.GET,
@@ -102,6 +103,8 @@ public class SecurityConfig {
             authorizeHttpRequests.requestMatchers(HttpMethod.GET,
             "/api/user/**").hasAuthority("getUserInfo");
             authorizeHttpRequests.requestMatchers(HttpMethod.GET,
+            "/api/article/**").hasAuthority("getUserInfo");   
+                     authorizeHttpRequests.requestMatchers(HttpMethod.POST,
             "/api/article/**").hasAuthority("getUserInfo");
 
         });

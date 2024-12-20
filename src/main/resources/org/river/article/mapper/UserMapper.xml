@@ -31,5 +31,6 @@
             <if test="email != null">
         email = #{email} ,</if>
         </set>
+        where id = #{id}
     </update>
 </mapper>

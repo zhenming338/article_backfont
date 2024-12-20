@@ -14,6 +14,9 @@ import org.river.article.service.UserService;
 import org.river.article.utils.springContext.BaseContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonSerializable.Base;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
@@ -59,6 +62,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editUserInfo(User user) {
+        User currentUser = userMapper.getUserByUsername(BaseContext.getContext());
+        user.setId(currentUser.getId());
         userMapper.editUserInfo(user);
     }
 }
